@@ -133,10 +133,7 @@ function userChoice(){
     
     }
 
-   /* 
-    
 
-    */
    
 
 
@@ -145,7 +142,7 @@ function userChoice(){
 function genratehtml(){
     var finishedhtml = render(employees)
    console.log(finishedhtml);
-   fs.writeFile('team.html', finishedhtml, function(err){
+   fs.writeFile(outputPath,finishedhtml, function(err){
        if(err){
            console.log(err)
        }
