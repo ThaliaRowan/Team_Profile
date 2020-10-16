@@ -4,6 +4,7 @@ const Employee = require("../lib/Employee");
 test("Can set office number via constructor argument", () => {
   const testValue = 100;
   const e = new Manager("Foo", 1, "test@test.com", testValue);
+  console.log(e);
   expect(e.officeNumber).toBe(testValue);
 });
 

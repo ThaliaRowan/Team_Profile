@@ -15,10 +15,12 @@ const { type } = require("os");
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
+var employees = [];
+
 inquirer.prompt([
     {
         type: 'input',
-        name: 'manager',
+        name: 'name',
         message: 'What is the name of your team manager?'
     },
     {
@@ -39,73 +41,118 @@ inquirer.prompt([
     }
     
     
-]).then(function(){
+]).then(function(managerAns){
+    var newManager = new Manager(managerAns.name, managerAns.id, managerAns.email, managerAns.officeNum );
+    employees.push(newManager)
+
+}).then(function(){
+    userChoice()
+
+})
+
+function userChoice(){
+
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'employee',
+            message: 'Would you like to add more members to the team?',
+            choices: [{name:'Engineer', value: 0}, {name:'Intern', value: 1}, {name:'I do not want to add anymore members.', value: 2}]
+        }
+    ]).then(function(res){
+        userEngineer(res);
+    });
     
-inquirer.prompt([
-    {
-        type: 'list',
-        name: 'employees',
-        message: 'Would you like to add more members to the team?',
-        choices: [{name:'Engineer', value: 0}, {name:'Intern', value: 1}, {name:'I do not want to add anymore members.', value: 2}]
+} 
+        
+    function userEngineer(res){
+        if(res.employee == 0 ){
+            inquirer.prompt([
+                {
+                    type: 'input',
+                    name: 'engineer',
+                    message:'What is the name of this enginner?'
+                },
+                {
+                            
+                    type: 'input',
+                    name: 'email',
+                    message: "What is the engineer's email address?"
+                },
+                {
+                    type: 'input',
+                    name: 'id',
+                    message: "What is the engineer's id?"
+                },
+                {
+                    type: 'input',
+                    name: 'github',
+                    message: "What is the engineer's github?"
+                },
+            ]).then(function(){
+                userChoice();
+            })
+        }
+        else if(res.employee == 1){
+            inquirer.prompt([
+                {
+                    type: 'input',
+                    name: 'intern',
+                    message:'What is the name of this intern?'
+                },
+                {
+                            
+                    type: 'input',
+                    name: 'email',
+                    message: "What is the intern's email address?"
+                },
+                {
+                    type: 'input',
+                    name: 'id',
+                    message: "What is the intern's id?"
+                },
+                {
+                    type: 'input',
+                    name: 'school',
+                    message: "What is the intern's school name?"
+                },
+            ]).then(function(){
+                userChoice();
+            })
+        } else if(res.employee == 2){
+            genratehtml();
+        }
+    
     }
-]).then(function(res){
-    console.log(res)
-    if(res.employees == 0 ){
-        inquirer.prompt([
-            {
-                type: 'input',
-                name: 'engineer',
-                message:'What is the name of this enginner?'
-            },
-            {
-                        
-                type: 'input',
-                name: 'email',
-                message: "What is the engineer's email address?"
-            },
-            {
-                type: 'input',
-                name: 'id',
-                message: "What is the engineer's id?"
-            },
-            {
-                type: 'input',
-                name: 'github',
-                message: "What is the engineer's github?"
-            },
-        ])
-    } else if(res.employees == 1){
-        inquirer.prompt([
-            {
-                type: 'input',
-                name: 'intern',
-                message:'What is the name of this intern?'
-            },
-            {
-                        
-                type: 'input',
-                name: 'email',
-                message: "What is the intern's email address?"
-            },
-            {
-                type: 'input',
-                name: 'id',
-                message: "What is the intern's id?"
-            },
-            {
-                type: 'input',
-                name: 'github',
-                message: "What is the intern's github?"
-            },
-        ])
-    }
-})
-})
+
+   /* 
+    
+
+    */
+   
+
+
+
+
+function genratehtml(){
+    var finishedhtml = render(employees)
+   console.log(finishedhtml);
+   fs.writeFile('team.html', finishedhtml, function(err){
+       if(err){
+           console.log(err)
+       }
+       console.log('success');
+   })
+}
+
 
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
+
+
+
 
 // After you have your html, you're now ready to create an HTML file using the HTML
 // returned from the `render` function. Now write it to a file named `team.html` in the
