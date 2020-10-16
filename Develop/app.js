@@ -89,7 +89,11 @@ function userChoice(){
                     name: 'github',
                     message: "What is the engineer's github?"
                 },
-            ]).then(function(){
+            ]).then(function(EngineerAns){
+            var newEngineer = new Engineer(EngineerAns.engineer, EngineerAns.id, EngineerAns.email, EngineerAns.github );
+            employees.push(newEngineer)
+        
+        }).then(function(){
                 userChoice();
             })
         }
@@ -116,7 +120,11 @@ function userChoice(){
                     name: 'school',
                     message: "What is the intern's school name?"
                 },
-            ]).then(function(){
+            ]).then(function(InternAns){
+            var newIntern = new Intern(InternAns.intern, InternAns.id, InternAns.email, InternAns.school );
+            employees.push(newIntern)
+        
+        }).then(function(){
                 userChoice();
             })
         } else if(res.employee == 2){
